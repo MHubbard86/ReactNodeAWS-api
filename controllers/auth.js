@@ -2,7 +2,7 @@ const User = require('../models/user');
 const Link = require('../models/link');
 const AWS = require('aws-sdk');
 const jwt = require('jsonwebtoken');
-const expressJwt = require('express-jwt');
+const { expressjwt: jwt2 } = require('express-jwt');
 const { registerEmailParams, forgotPasswordEmailParams } = require('../helpers/email');
 const shortId = require('shortid');
 const _ = require('lodash');
@@ -113,7 +113,7 @@ exports.login = (req, res) => {
     });
 };
 
-exports.requireSignin = expressJwt({ secret: process.env.JWT_SECRET }); // req.user
+exports.requireSignin = jwt2({ secret: process.env.JWT_SECRET, algorithms: ['RS256'] }); // req.user
 
 exports.authMiddleware = (req, res, next) => {
     const authUserId = req.user._id;
